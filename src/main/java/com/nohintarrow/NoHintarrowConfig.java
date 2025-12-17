@@ -7,15 +7,6 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("example")
 public interface NoHintarrowConfig extends Config
 {
-//	@ConfigItem(
-//		keyName = "greeting",
-//		name = "Welcome Greeting",
-//		description = "The message to show to the user when they login"
-//	)
-//	default String greeting()
-//	{
-//		return "Hello";
-//	}
 
 	@ConfigItem(
 			keyName = "clearDelaySeconds",
@@ -24,6 +15,7 @@ public interface NoHintarrowConfig extends Config
 	)
 	default int clearDelaySeconds()
 	{
-		return 5; // default 5 seconds
+		return 0; // default 0 seconds
 	}
+
 }

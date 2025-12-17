@@ -19,38 +19,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class NoHintarrowPlugin extends Plugin
 {
-//	@Inject
-//	private Client client;
-//
-//	@Inject
-//	private NoHintarrowConfig config;
-//
-//	@Override
-//	protected void startUp() throws Exception
-//	{
-//		log.debug("Example started!");
-//	}
-//
-//	@Override
-//	protected void shutDown() throws Exception
-//	{
-//		log.debug("Example stopped!");
-//	}
-//
-//	@Subscribe
-//	public void onGameStateChanged(GameStateChanged gameStateChanged)
-//	{
-//		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
-//		{
-//			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Example says " + config.greeting(), null);
-//		}
-//	}
-//
-//	@Provides
-//	NoHintarrowConfig provideConfig(ConfigManager configManager)
-//	{
-//		return configManager.getConfig(NoHintarrowConfig.class);
-//	}
 
 	@Inject
 	private Client client;

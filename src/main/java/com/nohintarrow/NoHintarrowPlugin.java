@@ -12,6 +12,10 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.api.ChatMessageType;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
+import java.awt.Color;
 
 @Slf4j
 @PluginDescriptor(
@@ -26,6 +30,9 @@ public class NoHintarrowPlugin extends Plugin
 	@Inject
 	private NoHintarrowConfig config;
 
+	@Inject
+	private ChatMessageManager chatMessageManager;
+
 	// Tracks how many ticks the arrow has been active
 	private int arrowActiveTicks = 0;
 
@@ -39,7 +46,6 @@ public class NoHintarrowPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		// Check if a hint arrow is active
-		//if (client.getHintArrowNpc() != -1 || client.getHintArrowPlayer() != -1 || client.getHintArrowPoint() != -1)
 		if(client.hasHintArrow())
 		{
 			arrowActiveTicks++;
@@ -51,6 +57,16 @@ public class NoHintarrowPlugin extends Plugin
 			{
 				client.clearHintArrow();
 				arrowActiveTicks = 0; // reset counter
+				chatMessageManager.queue(
+						QueuedMessage.builder()
+								.type(ChatMessageType.GAMEMESSAGE) // Game info style
+								.runeLiteFormattedMessage(
+										String.format("<col=%06x>",config.gameMessageColor().getRGB() & 0xFFFFFF)
+												+ "Hint arrow removed."
+												+ "</col>"
+								)
+								.build()
+				);
 			}
 		}
 		else

@@ -246,46 +246,38 @@ public class NoHintarrowPlugin extends Plugin
 	public void onMenuEntryAdded(MenuEntryAdded event) {
 		if (!config.doDebug()){ return; } // only add debug options if debug mode on
 
-		MenuAction menuAction = event.getMenuEntry().getType();
 		final boolean hotKeyPressed = client.isKeyPressed(KeyCode.KC_SHIFT);
+		if (!hotKeyPressed){ return; } // only add debug options if shift key is held
 
-		//region worldpoint from tile
-		if (hotKeyPressed && (menuAction == MenuAction.WALK || menuAction == MenuAction.SET_HEADING)) {
-			int worldId = event.getMenuEntry().getWorldViewId();
-			WorldView wv = client.getWorldView(worldId);
-			if (wv == null) {
-				return;
-			}
+		MenuAction menuAction = event.getMenuEntry().getType();
 
-			final Tile selectedSceneTile = wv.getSelectedSceneTile();
-			if (selectedSceneTile == null) {
-				return;
-			}
+		//region add setHintArrow options to menu
 
-			final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, selectedSceneTile.getLocalLocation());
-
-			client.getMenu().createMenuEntry(-1)
-					.setOption("setHintArrow")
-					.setTarget("Tile")
-					.setType(MenuAction.RUNELITE)
-					.onClick(e ->
-							client.setHintArrow(worldPoint));
+		// Coordinate from tile
+		if (menuAction == MenuAction.WALK) {
+			final int worldId = event.getMenuEntry().getWorldViewId();
+			Optional.ofNullable(client.getWorldView(worldId))
+					.map(WorldView::getSelectedSceneTile)
+					.map(e->WorldPoint.fromLocalInstance(client, e.getLocalLocation()))
+					.ifPresent(worldPoint ->
+						client.getMenu().createMenuEntry(-1)
+								.setOption("setHintArrow")
+								.setTarget("Tile")
+								.setType(MenuAction.RUNELITE)
+								.onClick(e ->
+										client.setHintArrow(worldPoint)));
 		}
-		//endregion
 
-		//region NPC
-		if (hotKeyPressed && (menuAction == MenuAction.EXAMINE_NPC)) {
-
+		// NPC
+		if (menuAction == MenuAction.EXAMINE_NPC) {
 			client.getMenu().createMenuEntry(-1)
 					.setOption("setHintArrow")
 					.setTarget(event.getTarget())
 					.setType(MenuAction.RUNELITE)
 					.onClick(e ->
 							client.setHintArrow(event.getMenuEntry().getNpc()));
-			//client.setHintArrow(event.getMenuEntry().getNpc()));
 		}
 		//endregion
-
 	}
 
 	//endregion

@@ -112,4 +112,26 @@ public interface NoHintarrowConfig extends Config
 		return true; // default will show label for substitute marker
 	}
 	//endregion
+
+	//region debug
+	@ConfigSection(
+			name = "Debug",
+			description = "Debug",
+			position = 3,
+			closedByDefault = true
+	)
+	String debugSection = "debugSection";
+
+	@ConfigItem(
+			keyName = "doDebugMessages",
+			name = "Debug Messages",
+			description = "Show debug messages in chatbox",
+			section = debugSection,
+			position = 0
+	)
+	default boolean doDebugMessages()
+	{
+		return false; // default won't show debug
+	}
+	//endregion
 }

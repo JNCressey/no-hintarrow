@@ -58,7 +58,7 @@ public class NoHintarrowOverlay extends Overlay{
                     break;
 
                 case HintArrowType.WORLDENTITY:
-                    /* there is no client.getHintArrowWorldEntity? */ //todo?
+                    /* there is no Client::getHintArrowWorldEntity? */ //todo?
                 case HintArrowType.NONE:
                 default:
                     //shouldn't reach this case since a marker configuration would be set

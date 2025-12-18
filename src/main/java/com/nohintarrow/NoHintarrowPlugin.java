@@ -3,8 +3,7 @@ package com.nohintarrow;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
+import net.runelite.api.*;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -12,8 +11,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
-import net.runelite.api.HintArrowType;
 import net.runelite.client.ui.overlay.OverlayManager;
+import java.util.Optional;
 
 @Slf4j
 @PluginDescriptor(
@@ -46,6 +45,20 @@ public class NoHintarrowPlugin extends Plugin
 	private boolean isSubstituteMarkerSet = false;
 	private int substituteMarkerActiveTicks = 0;
 
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		log.info("no-hintarrow plugin started!");
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
+		log.info("no-hintarrow plugin stopped!");
+	}
 
 	@Provides
 	NoHintarrowConfig provideConfig(ConfigManager configManager)
@@ -97,8 +110,8 @@ public class NoHintarrowPlugin extends Plugin
 		{
 			clearSubstituteMarker();
 		}
-
 	}
+
 
 
 
@@ -111,6 +124,11 @@ public class NoHintarrowPlugin extends Plugin
 
 	private void clearHintArrow()
 	{
+		if (config.doDebugMessages())
+		{
+			debugHintArrowValues();
+		}
+
 		updateSubstituteMarker();
 
 		arrowActiveTicks = 0; // reset counter
@@ -128,17 +146,23 @@ public class NoHintarrowPlugin extends Plugin
 	private void sendAlertRemovedHintArrow()
 	{
 		if (config.doAlerts()) {
-			chatMessageManager.queue(
-				QueuedMessage.builder()
-					.type(ChatMessageType.GAMEMESSAGE) // Game info style
-					.runeLiteFormattedMessage(
-						String.format("<col=%06x>", config.alertColor().getRGB() & 0xFFFFFF)
-							+ "Hint arrow removed."
-							+ "</col>"
-					)
-					.build()
-			);
+			printInChatbox("Hint arrow removed.");
 		}
+	}
+
+	private void printInChatbox(String message)
+	{
+		log.info(message);
+		chatMessageManager.queue(
+				QueuedMessage.builder()
+						.type(ChatMessageType.GAMEMESSAGE) // Game info style
+						.runeLiteFormattedMessage(
+								String.format("<col=%06x>", config.alertColor().getRGB() & 0xFFFFFF)
+										+ message
+										+ "</col>"
+						)
+						.build()
+		);
 	}
 	//endregion
 
@@ -169,21 +193,51 @@ public class NoHintarrowPlugin extends Plugin
 
 		overlay.clearSubstituteMarker();
 	}
-
 	//endregion
 
-	@Override
-	protected void startUp() throws Exception
+
+	// use for testing, debug info put in chatbox
+	private void debugHintArrowValues()
 	{
-		log.info("no-hintarrow plugin started!");
-		overlayManager.add(overlay);
+		try {
+			String[] hintarrowTypeNames = {
+					"NONE",
+					"NPC",
+					"COORDINATE",
+					"PLAYER",
+					"WORLDENTITY"
+			};
+			printInChatbox("hint arrow type " + String.valueOf(client.getHintArrowType()) + " (" + hintarrowTypeNames[client.getHintArrowType()] + ")");
+
+			printInChatbox(
+					"NPC name "
+					+ Optional.ofNullable(client.getHintArrowNpc())
+							.map(NPC::getName)
+							.orElse("-null-")
+			);
+			printInChatbox(
+					"Coordinates "
+					+ Optional.ofNullable(client.getHintArrowPoint())
+							.map(p->String.valueOf(p.getX()) + "," + String.valueOf(p.getY()))
+							.orElse("-null-")
+			);
+			printInChatbox(
+					"player name "
+					+ Optional.ofNullable(client.getHintArrowPlayer())
+							.map(Player::getName)
+							.orElse("-null-")
+			);
+			printInChatbox(
+					"worldentity "
+					+ "..." /* there is no Client::getHintArrowWorldEntity? */ //todo?
+			);
+		} catch (Exception e) {
+			printInChatbox(e.getMessage());
+			throw new RuntimeException(e);
+		}
+
 	}
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-		overlayManager.remove(overlay);
-		log.info("no-hintarrow plugin stopped!");
-	}
+
 
 }

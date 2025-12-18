@@ -30,6 +30,9 @@ public class NoHintarrowPlugin extends Plugin
 	private NoHintarrowConfig config;
 
 	@Inject
+	private ConfigManager configManager;
+
+	@Inject
 	private ChatMessageManager chatMessageManager;
 
 	//region overlay
@@ -53,6 +56,12 @@ public class NoHintarrowPlugin extends Plugin
 	{
 		log.info("no-hintarrow plugin started!");
 		overlayManager.add(overlay);
+
+		if (!NoHintarrowConfig.ENABLE_DEBUG_MODE){
+			configManager.setConfiguration("noHintarrow","doDebug",false);
+			configManager.setConfiguration("noHintarrow","doDebugMessages",false);
+		}
+
 	}
 
 	@Override

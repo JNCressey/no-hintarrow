@@ -31,11 +31,13 @@ public class NoHintarrowPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	//region overlay
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
 	private NoHintarrowOverlay overlay;
+	//endregion
 
 	// Tracks how many ticks the arrow has been active for when to clear hint arrow
 	private int arrowActiveTicks = 0;
@@ -44,11 +46,13 @@ public class NoHintarrowPlugin extends Plugin
 	private boolean isSubstituteMarkerSet = false;
 	private int substituteMarkerActiveTicks = 0;
 
+
 	@Provides
 	NoHintarrowConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(NoHintarrowConfig.class);
 	}
+
 
 	@Subscribe
 	public void onGameTick(GameTick event)

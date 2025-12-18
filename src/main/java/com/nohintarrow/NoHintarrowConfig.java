@@ -76,13 +76,13 @@ public interface NoHintarrowConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "substituteMarkerDuration",
+			keyName = "substituteMarkerDurationSeconds",
 			name = "Duration (seconds)",
 			description = "How many seconds before the substitute marker is cleared",
 			section = substituteMarkerSection,
 			position = 1
 	)
-	default int substituteMarkerDuration()
+	default int substituteMarkerDurationSeconds()
 	{
 		return 60; // default 1 minute
 	}

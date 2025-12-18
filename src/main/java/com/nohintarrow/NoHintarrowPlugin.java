@@ -12,6 +12,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.api.HintArrowType;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
+import net.runelite.api.coords.WorldPoint;
 
 @Slf4j
 @PluginDescriptor(
@@ -32,6 +36,14 @@ public class NoHintarrowPlugin extends Plugin
 	// Tracks how many ticks the arrow has been active for when to clear hint arrow
 	private int arrowActiveTicks = 0;
 
+	//track what has been marked by the substitute marker in order to remove the marker
+	private boolean isSubstituteMarkerSet = false;
+	private int substituteMarkerActiveTicks = 0;
+	private int hintArrowType = HintArrowType.NONE;
+	private NPC hintArrowNPC;
+	private Player hintArrowPlayer;
+	private WorldPoint hintArrowPoint;
+
 	@Provides
 	NoHintarrowConfig provideConfig(ConfigManager configManager)
 	{
@@ -41,35 +53,60 @@ public class NoHintarrowPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		// Check if a hint arrow is active
+		//region timers
+		//region Arrow timer
 		if(client.hasHintArrow())
 		{
 			arrowActiveTicks++; //increment counter
 
-			if (arrowActiveTicks >= getDelayTicks())
-			{
-				clearHintArrow();
-			}
 		}
 		else
 		{
 			// No arrow active, reset counter
 			arrowActiveTicks = 0;
 		}
+		//endregion
+
+		//region Substitute Marker timer
+		if(isSubstituteMarkerSet){
+			substituteMarkerActiveTicks++; //increment counter
+		}
+		else
+		{
+			// No substitute marker active, reset counter
+			substituteMarkerActiveTicks = 0;
+		}
+		//endregion
+		//endregion
+
+
+		if (client.hasHintArrow() && (arrowActiveTicks >= getClearDelayTicks()))
+		{
+			clearHintArrow();
+		}
+
+		if (isSubstituteMarkerSet && (substituteMarkerActiveTicks >= getSubstituteMarkerDurationTicks()))
+		{
+			clearSubstituteMarker();
+		}
+
 	}
 
 
+	//region remove hint-arrow
 	// the user config for clear delay converted to game ticks (1 tick = 0.6s)
-	private int getDelayTicks(){
+	private int getClearDelayTicks(){
 		return (int) Math.ceil(config.clearDelaySeconds() / 0.6);
 	}
 
 
 	private void clearHintArrow()
 	{
-		client.clearHintArrow();
+		updateSubstituteMarker();
 
 		arrowActiveTicks = 0; // reset counter
+
+		client.clearHintArrow();
 
 		// chatbox alert if enabled
 		if (config.doAlerts()) {
@@ -85,5 +122,50 @@ public class NoHintarrowPlugin extends Plugin
 			);
 		}
 	}
+	//endregion
+
+	//region substitute marker
+	// the user config for substitute marker duration converted to game ticks (1 tick = 0.6s)
+	private int getSubstituteMarkerDurationTicks(){
+		return (int) Math.ceil(config.substituteMarkerDurationSeconds() / 0.6);
+	}
+
+	private void updateSubstituteMarker()
+	{
+		clearSubstituteMarker();
+
+		hintArrowType = client.getHintArrowType();
+		switch (hintArrowType){
+			case HintArrowType.NPC:
+				hintArrowNPC = client.getHintArrowNpc();
+				break;
+			case HintArrowType.COORDINATE:
+				hintArrowPoint = client.getHintArrowPoint();
+				break;
+			case HintArrowType.PLAYER:
+				hintArrowPlayer = client.getHintArrowPlayer();
+				break;
+
+			case HintArrowType.WORLDENTITY:
+				/* there is no client.getHintArrowWorldEntity? */
+			case HintArrowType.NONE:
+			default:
+				return;
+		}
+
+	}
+
+
+	private void clearSubstituteMarker()
+	{
+		isSubstituteMarkerSet = false;
+		substituteMarkerActiveTicks = 0;
+		hintArrowType = HintArrowType.NONE;
+		hintArrowNPC = null;
+		hintArrowPlayer = null;
+		hintArrowPoint = null;
+	}
+
+	//endregion
 
 }

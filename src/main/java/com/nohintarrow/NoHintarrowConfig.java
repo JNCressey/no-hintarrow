@@ -109,16 +109,5 @@ public interface NoHintarrowConfig extends Config
 	{
 		return true; // default will show label for substitute marker
 	}
-
-	@ConfigItem(
-			keyName = "substituteMarkerLabelColor",
-			name = "Label Color",
-			description = "Choose the color for label",
-			section = substituteMarkerSection,
-			position = 4
-	)
-	default Color substituteMarkerLabelColor() {
-		return Color.YELLOW; // default yellow
-	}
 	//endregion
 }

@@ -33,16 +33,15 @@ public class NoHintarrowPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Inject
+	private NoHintarrowOverlay overlay;
+
 	// Tracks how many ticks the arrow has been active for when to clear hint arrow
 	private int arrowActiveTicks = 0;
 
 	//track what has been marked by the substitute marker in order to remove the marker
 	private boolean isSubstituteMarkerSet = false;
 	private int substituteMarkerActiveTicks = 0;
-	private int hintArrowType = HintArrowType.NONE;
-	private NPC hintArrowNPC;
-	private Player hintArrowPlayer;
-	private WorldPoint hintArrowPoint;
 
 	@Provides
 	NoHintarrowConfig provideConfig(ConfigManager configManager)
@@ -53,22 +52,6 @@ public class NoHintarrowPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		//region todo remove
-		if (config.doSubstituteMarker() && isSubstituteMarkerSet)
-		{
-			chatMessageManager.queue(
-					QueuedMessage.builder()
-							.type(ChatMessageType.GAMEMESSAGE) // Game info style
-							.runeLiteFormattedMessage(
-									String.format("<col=%06x>", config.alertColor().getRGB() & 0xFFFFFF)
-											+ "[debug]: draw marker."
-											+ "</col>"
-							)
-							.build()
-			);
-		}
-		//endregion
-
 		//region timers
 		//region Arrow timer
 		if(client.hasHintArrow())
@@ -109,6 +92,7 @@ public class NoHintarrowPlugin extends Plugin
 	}
 
 
+
 	//region remove hint-arrow
 	// the user config for clear delay converted to game ticks (1 tick = 0.6s)
 	private int getClearDelayTicks(){
@@ -127,6 +111,8 @@ public class NoHintarrowPlugin extends Plugin
 		sendAlertRemovedHintArrow();
 	}
 	//endregion
+
+
 
 	//region chatbox alerts
 	// send chatbox alert that hint-arrow was removed, if alerts enabled
@@ -147,38 +133,23 @@ public class NoHintarrowPlugin extends Plugin
 	}
 	//endregion
 
+
+
 	//region substitute marker
 	// the user config for substitute marker duration converted to game ticks (1 tick = 0.6s)
 	private int getSubstituteMarkerDurationTicks(){
 		return (int) Math.ceil(config.substituteMarkerDurationSeconds() / 0.6);
 	}
 
+
 	private void updateSubstituteMarker()
 	{
 		clearSubstituteMarker();
 
-		isSubstituteMarkerSet = true;
-		hintArrowType = client.getHintArrowType();
-
-		switch (hintArrowType){
-			case HintArrowType.NPC:
-				hintArrowNPC = client.getHintArrowNpc();
-				break;
-			case HintArrowType.COORDINATE:
-				hintArrowPoint = client.getHintArrowPoint();
-				break;
-			case HintArrowType.PLAYER:
-				hintArrowPlayer = client.getHintArrowPlayer();
-				break;
-
-			case HintArrowType.WORLDENTITY:
-				/* there is no client.getHintArrowWorldEntity? */
-			case HintArrowType.NONE:
-			default:
-				clearSubstituteMarker();
-				return;
+		if (client.getHintArrowType() != HintArrowType.NONE)
+		{
+			isSubstituteMarkerSet = overlay.updateSubstituteMarker();
 		}
-
 	}
 
 
@@ -186,10 +157,8 @@ public class NoHintarrowPlugin extends Plugin
 	{
 		isSubstituteMarkerSet = false;
 		substituteMarkerActiveTicks = 0;
-		hintArrowType = HintArrowType.NONE;
-		hintArrowNPC = null;
-		hintArrowPlayer = null;
-		hintArrowPoint = null;
+
+		overlay.clearSubstituteMarker();
 	}
 
 	//endregion

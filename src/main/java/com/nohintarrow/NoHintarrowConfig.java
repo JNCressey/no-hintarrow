@@ -9,7 +9,6 @@ import java.awt.Color;
 @ConfigGroup("noHintarrow")
 public interface NoHintarrowConfig extends Config
 {
-
 	@ConfigItem(
 			keyName = "clearDelaySeconds",
 			name = "Clear Delay (seconds)",
@@ -21,6 +20,8 @@ public interface NoHintarrowConfig extends Config
 		return 0; // default 0 seconds
 	}
 
+
+
 	//region Alert Settings
 	@ConfigSection(
 			name = "Alert Settings",
@@ -29,6 +30,7 @@ public interface NoHintarrowConfig extends Config
 			closedByDefault = true
 	)
 	String alertSection = "alertSection";
+
 
 	@ConfigItem(
 			keyName = "doAlerts",
@@ -43,6 +45,7 @@ public interface NoHintarrowConfig extends Config
 		return true; // default will show alerts
 	}
 
+
 	@ConfigItem(
 			keyName = "alertColor",
 			name = "Alert Color",
@@ -56,6 +59,8 @@ public interface NoHintarrowConfig extends Config
 	}
 	//endregion
 
+
+
 	//region Substitute Marker Settings
 	@ConfigSection(
 			name = "Substitute Marker Settings",
@@ -64,6 +69,7 @@ public interface NoHintarrowConfig extends Config
 			closedByDefault = true
 	)
 	String substituteMarkerSection = "substituteMarkerSection";
+
 
 	@ConfigItem(
 			keyName = "doSubstituteMarker",
@@ -77,6 +83,7 @@ public interface NoHintarrowConfig extends Config
 		return false; // default won't use a substitute marker
 	}
 
+
 	@ConfigItem(
 			keyName = "substituteMarkerDurationSeconds",
 			name = "Duration (seconds)",
@@ -89,6 +96,7 @@ public interface NoHintarrowConfig extends Config
 		return 60; // default 1 minute
 	}
 
+
 	@ConfigItem(
 			keyName = "substituteMarkerColor",
 			name = "Marker Color",
@@ -99,6 +107,7 @@ public interface NoHintarrowConfig extends Config
 	default Color substituteMarkerColor() {
 		return Color.YELLOW; // default yellow
 	}
+
 
 	@ConfigItem(
 			keyName = "showSubstituteMarkerLabel",
@@ -113,6 +122,8 @@ public interface NoHintarrowConfig extends Config
 	}
 	//endregion
 
+
+
 	//region debug
 	@ConfigSection(
 			name = "Debug",
@@ -122,17 +133,20 @@ public interface NoHintarrowConfig extends Config
 	)
 	String debugSection = "debugSection";
 
+
 	@ConfigItem(
 			keyName = "doDebug",
 			name = "Debug Mode",
 			description = "Enable shift click to manually set hint arrows",
 			section = debugSection,
 			position = 0
+			//hidden = true
 	)
 	default boolean doDebug()
 	{
 		return false; // default won't show debug menu options
 	}
+
 
 	@ConfigItem(
 			keyName = "doDebugMessages",
@@ -140,6 +154,7 @@ public interface NoHintarrowConfig extends Config
 			description = "Show debug messages in chatbox",
 			section = debugSection,
 			position = 1
+			//hidden = true
 	)
 	default boolean doDebugMessages()
 	{

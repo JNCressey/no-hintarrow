@@ -85,7 +85,11 @@ public class NoHintarrowPlugin extends Plugin
 			clearHintArrow();
 		}
 
-		if (isSubstituteMarkerSet && (substituteMarkerActiveTicks >= getSubstituteMarkerDurationTicks()))
+
+		if (
+				(isSubstituteMarkerSet && (substituteMarkerActiveTicks >= getSubstituteMarkerDurationTicks())) // remove marker after duration
+				|| client.hasHintArrow() // remove marker if new hint arrow has been set
+		)
 		{
 			clearSubstituteMarker();
 		}

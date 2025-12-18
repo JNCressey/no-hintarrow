@@ -53,6 +53,22 @@ public class NoHintarrowPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		//region todo remove
+		if (config.doSubstituteMarker() && isSubstituteMarkerSet)
+		{
+			chatMessageManager.queue(
+					QueuedMessage.builder()
+							.type(ChatMessageType.GAMEMESSAGE) // Game info style
+							.runeLiteFormattedMessage(
+									String.format("<col=%06x>", config.alertColor().getRGB() & 0xFFFFFF)
+											+ "[debug]: draw marker."
+											+ "</col>"
+							)
+							.build()
+			);
+		}
+		//endregion
+
 		//region timers
 		//region Arrow timer
 		if(client.hasHintArrow())
@@ -141,7 +157,9 @@ public class NoHintarrowPlugin extends Plugin
 	{
 		clearSubstituteMarker();
 
+		isSubstituteMarkerSet = true;
 		hintArrowType = client.getHintArrowType();
+
 		switch (hintArrowType){
 			case HintArrowType.NPC:
 				hintArrowNPC = client.getHintArrowNpc();
@@ -157,6 +175,7 @@ public class NoHintarrowPlugin extends Plugin
 				/* there is no client.getHintArrowWorldEntity? */
 			case HintArrowType.NONE:
 			default:
+				clearSubstituteMarker();
 				return;
 		}
 

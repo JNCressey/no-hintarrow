@@ -11,9 +11,9 @@ Can enable a substitute marker. It doesn't flash. It looks like a square on the 
 - Clear Delay (seconds) = `0`  
   "How many seconds before the hint arrow is cleared automatically"
 
-Alert Settings  
-"Alert message configuration"
----
+## Alert Settings
+### "Alert message configuration"
+
 
 - Do Alerts = `true`  
   "Show message in chat when a hint arrow is removed"

@@ -23,7 +23,6 @@ Can enable a substitute marker. It doesn't flash. It looks like a square on the 
 
  *Alert message configuration*
     </th>
-    <td></td>
   </tr>
   <tr>
     <td>Do Alerts</td>

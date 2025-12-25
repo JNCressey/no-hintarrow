@@ -6,6 +6,8 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import java.awt.Color;
 
+import com.nohintarrow.DebugMessagesDetailLevel;
+
 @ConfigGroup("noHintArrow")
 public interface NoHintArrowConfig extends Config
 {
@@ -23,45 +25,6 @@ public interface NoHintArrowConfig extends Config
 	{
 		return 0; // default 0 seconds
 	}
-
-
-
-	//region Alert Settings
-	@ConfigSection(
-			name = "Alert Settings",
-			description = "Alert message configuration",
-			position = 1,
-			closedByDefault = true
-	)
-	String alertSection = "alertSection";
-
-
-	@ConfigItem(
-			keyName = "doAlerts",
-			name = "Do Alerts",
-			description = "Show message in chat when a hint arrow is removed",
-			section = alertSection,
-			position = 0
-	)
-	default boolean doAlerts()
-	{
-
-		return true; // default will show alerts
-	}
-
-
-	@ConfigItem(
-			keyName = "alertColor",
-			name = "Alert Color",
-			description = "Choose the color for alert text",
-			section = alertSection,
-			position = 1
-	)
-	default Color alertColor()
-	{
-		return new Color(0x7F007F); // default same purple as incoming trade requests
-	}
-	//endregion
 
 
 
@@ -158,9 +121,22 @@ public interface NoHintArrowConfig extends Config
 			section = debugSection,
 			position = 1
 	)
-	default boolean doDebugMessages()
+	default DebugMessagesDetailLevel doDebugMessages()
 	{
-		return false; // default won't show debug
+		return DebugMessagesDetailLevel.NONE; // default won't show debug messages
+	}
+
+
+	@ConfigItem(
+			keyName = "debugMessageColor",
+			name = "Debug Message Color",
+			description = "Choose the color for debug text",
+			section = debugSection,
+			position = 2
+	)
+	default Color debugMessageColor()
+	{
+		return new Color(0x7F007F); // default same purple as incoming trade requests
 	}
 	//endregion
 }

@@ -128,45 +128,13 @@ public class NoHintArrowPlugin extends Plugin
 
 	private void clearHintArrow()
 	{
-		if (config.doDebugMessages())
-		{
-			debugHintArrowValues();
-		}
+		debugHintArrowValues();
 
 		updateSubstituteMarker();
 
 		arrowActiveTicks = 0; // reset counter
 
 		client.clearHintArrow();
-
-		sendAlertRemovedHintArrow();
-	}
-	//endregion
-
-
-
-	//region chatbox alerts
-	// send chatbox alert that hint-arrow was removed, if alerts enabled
-	private void sendAlertRemovedHintArrow()
-	{
-		if (config.doAlerts()) {
-			printInChatbox("Hint arrow removed.");
-		}
-	}
-
-	private void printInChatbox(String message)
-	{
-		log.info(message);
-		chatMessageManager.queue(
-				QueuedMessage.builder()
-						.type(ChatMessageType.GAMEMESSAGE) // Game info style
-						.runeLiteFormattedMessage(
-								String.format("<col=%06x>", config.alertColor().getRGB() & 0xFFFFFF)
-										+ message
-										+ "</col>"
-						)
-						.build()
-		);
 	}
 	//endregion
 
@@ -200,46 +168,8 @@ public class NoHintArrowPlugin extends Plugin
 	//endregion
 
 
+
 	//region debug
-	// use for testing, debug info put in chatbox
-	private void debugHintArrowValues()
-	{
-		try {
-			String[] hintArrowTypeNames = {
-					"NONE",
-					"NPC",
-					"COORDINATE",
-					"PLAYER",
-					"WORLDENTITY"
-			};
-			printInChatbox("hint arrow type " + client.getHintArrowType() + " (" + hintArrowTypeNames[client.getHintArrowType()] + ")");
-
-			printInChatbox(
-					"NPC name "
-					+ Optional.ofNullable(client.getHintArrowNpc())
-							.map(NPC::getName)
-							.orElse("-null-")
-			);
-			printInChatbox(
-					"Coordinates "
-					+ Optional.ofNullable(client.getHintArrowPoint())
-							.map(p->p.getX() + "," + p.getY())
-							.orElse("-null-")
-			);
-			printInChatbox(
-					"player name "
-					+ Optional.ofNullable(client.getHintArrowPlayer())
-							.map(Player::getName)
-							.orElse("-null-")
-			);
-		} catch (Exception e) {
-			printInChatbox(e.getMessage());
-			throw new RuntimeException(e);
-		}
-
-	}
-
-
 	// use for testing, manually set hint arrows when shift clicking on things
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event) {
@@ -294,5 +224,83 @@ public class NoHintArrowPlugin extends Plugin
 
 	}
 
+
+	private void printInChatbox(String message)
+	{
+		log.info(message);
+		chatMessageManager.queue(
+				QueuedMessage.builder()
+						.type(ChatMessageType.GAMEMESSAGE) // Game info style
+						.runeLiteFormattedMessage(
+								String.format("<col=%06x>", config.debugMessageColor().getRGB() & 0xFFFFFF)
+										+ message
+										+ "</col>"
+						)
+						.build()
+		);
+	}
+
+
+	// use for testing, debug info put in chatbox
+	private void debugHintArrowValues()
+	{
+		switch(config.doDebugMessages()) {
+			case INFORMATIVE:
+				printInChatbox("Hint arrow removed.");
+
+				String[] hintArrowTypeNames = {
+						"NONE",
+						"NPC",
+						"COORDINATE",
+						"PLAYER",
+						"WORLDENTITY"
+				};
+				int hintArrowTypeIndex = client.getHintArrowType();
+				String hintArrowTypeName = hintArrowTypeNames[client.getHintArrowType()];
+				printInChatbox("Hint arrow type " + hintArrowTypeIndex + " (" + hintArrowTypeName + ")");
+
+				switch (hintArrowTypeName) {
+					case "NPC":
+						printInChatbox(
+								"NPC name "
+										+ Optional.ofNullable(client.getHintArrowNpc())
+										.map(NPC::getName)
+										.orElse("-null-")
+						);
+						break;
+
+					case "COORDINATE":
+						printInChatbox(
+								"Coordinates "
+										+ Optional.ofNullable(client.getHintArrowPoint())
+										.map(p -> p.getX() + "," + p.getY())
+										.orElse("-null-")
+						);
+						break;
+
+					case "PLAYER":
+						printInChatbox(
+								"player name "
+										+ Optional.ofNullable(client.getHintArrowPlayer())
+										.map(Player::getName)
+										.orElse("-null-")
+						);
+						break;
+
+					default:
+						//pass
+						break;
+				}
+				break;
+
+			case MINIMAL:
+				printInChatbox("Hint arrow removed.");
+				break;
+
+			default:
+				break;
+		}
+
+	}
 	//endregion
 }

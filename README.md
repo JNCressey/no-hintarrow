@@ -6,7 +6,7 @@ Alerts you by a game message in the chatbox when a hint arrow was removed.
 
 Can enable a substitute marker. It doesn't flash. It looks like a square on the floor. 
 
-# User Settings
+# Options
 <table>
   <tr>
     <th>Setting</th>
@@ -17,22 +17,6 @@ Can enable a substitute marker. It doesn't flash. It looks like a square on the 
     <td>Clear Delay (seconds)</td>
     <td><code>0</code></td>
     <td>How many seconds before the hint arrow is cleared automatically</td>
-  </tr>
-  <tr>
-    <th colspan="3">Alert Settings
-
- *Alert message configuration*
-    </th>
-  </tr>
-  <tr>
-    <td>Do Alerts</td>
-    <td><code>true</code></td>
-    <td>Show message in chat when a hint arrow is removed</td>
-  </tr>
-  <tr>
-    <td>Alert Color</td>
-    <td><code>#7F007F</code> (same purple as incoming trade requests)</td>
-    <td>Choose the color for alert text</td>
   </tr>
   <tr>
     <th colspan="3">Substitute Marker Settings</th>
@@ -56,5 +40,23 @@ Can enable a substitute marker. It doesn't flash. It looks like a square on the 
     <td>Show Label</td>
     <td><code>true</code></td>
     <td>Show a text label ("Hint") on the substitute marker</td>
+  </tr>
+  <tr>
+    <th colspan="3">Debug Options</th>
+  </tr>
+  <tr>
+    <td>Debug Mode</td>
+    <td><code>false</code></td>
+    <td>Enable shift click to manually set hint arrows</td>
+  </tr>
+  <tr>
+    <td>Debug Messages</td>
+    <td><code>None</code></td>
+    <td>Show debug messages in chatbox</td>
+  </tr>
+  <tr>
+    <td>Debug Message Color</td>
+    <td><code>#7F007F</code> (same purple as incoming trade requests)</td>
+    <td>Choose the color for debug text</td>
   </tr>
 </table>

@@ -18,7 +18,7 @@ import net.runelite.api.coords.WorldPoint;
 
 @Slf4j
 @PluginDescriptor(
-	name = "No Hint-arrow"
+	name = "No Hint-Arrow"
 )
 public class NoHintArrowPlugin extends Plugin
 {
@@ -173,7 +173,7 @@ public class NoHintArrowPlugin extends Plugin
 	// use for testing, manually set hint arrows when shift clicking on things
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event) {
-		if (!config.doDebug()){ return; } // only add debug options if debug mode on
+		if (!config.doDebugManualHints()){ return; } // only add debug options if debug mode on
 
 		final boolean hotKeyPressed = client.isKeyPressed(KeyCode.KC_SHIFT);
 		if (!hotKeyPressed){ return; } // only add debug options if shift key is held

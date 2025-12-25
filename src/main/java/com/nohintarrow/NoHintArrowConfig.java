@@ -6,8 +6,6 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import java.awt.Color;
 
-import com.nohintarrow.DebugMessagesDetailLevel;
-
 @ConfigGroup("noHintArrow")
 public interface NoHintArrowConfig extends Config
 {
@@ -102,13 +100,13 @@ public interface NoHintArrowConfig extends Config
 
 
 	@ConfigItem(
-			keyName = "doDebug",
-			name = "Debug Mode",
+			keyName = "doDebugManualHints",
+			name = "Manually add Hint-Arrows",
 			description = "Enable shift click to manually set hint arrows",
 			section = debugSection,
 			position = 0
 	)
-	default boolean doDebug()
+	default boolean doDebugManualHints()
 	{
 		return false; // default won't show debug menu options
 	}

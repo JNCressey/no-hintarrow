@@ -45,7 +45,7 @@ Can enable a substitute marker. It doesn't flash. It looks like a square on the 
     <th colspan="3">Debug Options</th>
   </tr>
   <tr>
-    <td>Debug Mode</td>
+    <td>Manually add Hint-Arrows</td>
     <td><code>false</code></td>
     <td>Enable shift click to manually set hint arrows</td>
   </tr>

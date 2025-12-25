@@ -18,7 +18,9 @@ import net.runelite.api.coords.WorldPoint;
 
 @Slf4j
 @PluginDescriptor(
-	name = "No Hint-Arrow"
+	name = "No Hint-Arrow",
+	description ="Completely remove the flashing yellow hint arrow, or let it only show for a set length of seconds. Optional substitute marker.",
+	tags = {"accessibility","epilepsy","flashing","tutorial","arrow","marker"}
 )
 public class NoHintArrowPlugin extends Plugin
 {

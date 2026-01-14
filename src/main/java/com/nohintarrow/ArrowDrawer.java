@@ -7,6 +7,8 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.LOCAL_HALF_TILE_SIZE;
 import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
+
+import net.runelite.api.Player;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -76,7 +78,7 @@ public class ArrowDrawer //based on the boat arrow from LlemonDuck/sailing plugi
                 arrowX.length,
                 playerLp.getX(),
                 playerLp.getY(),
-                0,
+                getPlayerZ3dCentre(client),//0,
                 ArrowDrawer.jauBetween(targetLp, playerLp),
                 arrowX,
                 arrowY,
@@ -87,6 +89,18 @@ public class ArrowDrawer //based on the boat arrow from LlemonDuck/sailing plugi
 
         g.setColor(color);
         g.fill(new Polygon(outXs, outYs, outXs.length));
+    }
+    /**
+      * @return the 3d z coordinate of the ground under the player for the Perspective.modelToCanvas call
+     */
+    static int getPlayerZ3dCentre(Client client){
+        Player localPlayer = client.getLocalPlayer();
+        LocalPoint lp = localPlayer.getLocalLocation();
+        int sceneX = lp.getSceneX();
+        int sceneY = lp.getSceneY();
+        WorldView wv = client.getTopLevelWorldView();
+        int z3dCentre = wv.getTileHeights()[wv.getPlane()][sceneX][sceneY];
+        return z3dCentre;
     }
 
 }

@@ -45,7 +45,7 @@ public interface NoHintArrowConfig extends Config
 	)
 	default boolean doSubstituteTileMarker()
 	{
-		return false; // default won't use a substitute marker
+		return true; // default will use a substitute tile marker
 	}
 
 
@@ -108,7 +108,7 @@ public interface NoHintArrowConfig extends Config
 	)
 	default boolean doSubstituteArrow()
 	{
-		return false; // default won't use a substitute arrow
+		return true; // default will use a substitute arrow
 	}
 
 
@@ -138,13 +138,13 @@ public interface NoHintArrowConfig extends Config
 
 
 	@ConfigItem(
-			keyName = "substituteArrowRadius",
-			name = "Clear Radius",
+			keyName = "substituteArrowClearRadius",
+			name = "Clear radius",
 			description = "Radius of clear space around player before the arrow starts",
 			section = substituteArrowSection,
 			position = 3
 	)
-	default int substituteArrowRadius() {
+	default int substituteArrowClearRadius() {
 		return 3; // default about 1 tile
 	}
 	//endregion

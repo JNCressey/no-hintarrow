@@ -75,7 +75,7 @@ public class NoHintArrowOverlay extends Overlay{
                             client,
                             hintArrowNPC.getWorldLocation(),
                             config.substituteArrowColor(),
-                            config.substituteArrowRadius()
+                            config.substituteArrowClearRadius()
                     );
                     break;
                 case HintArrowType.COORDINATE:
@@ -84,7 +84,7 @@ public class NoHintArrowOverlay extends Overlay{
                             client,
                             hintArrowPoint,
                             config.substituteArrowColor(),
-                            config.substituteArrowRadius()
+                            config.substituteArrowClearRadius()
                     );
                     break;
                 case HintArrowType.PLAYER:
@@ -93,7 +93,7 @@ public class NoHintArrowOverlay extends Overlay{
                             client,
                             hintArrowPlayer.getWorldLocation(),
                             config.substituteArrowColor(),
-                            config.substituteArrowRadius()
+                            config.substituteArrowClearRadius()
                     );
                     break;
 

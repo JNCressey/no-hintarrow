@@ -6,30 +6,8 @@ Replaces the hint with a substitute: a tile marker square and a (non-flashing) a
 
 ![demonstration of how the susbtitute looks](substitute-arrow-demo.png)
 
-# Options
-<style>
-    .optionsTable {
-        border-collapse: collapse; /* Ensures borders don't double up */
-        border: 2px solid #333; /* Outer border colour */
-    }
-    /* Style table cells */
-    .optionsTable td, .optionsTable th {
-      border: 1px solid #333; /* Cell border colour */
-      padding: 0.5em 0.25em;
-    }
-    /* Center subheadings */
-    .optionsTable th[colspan]{
-      text-align: center;
-    }
-    /* Alternate row colors */
-    .optionsTable tr:nth-child(even) {
-      background-color: #171717;
-    }
-    .optionsTable tr:nth-child(odd) {
-      background-color: #232323;
-    }
-</style>
-<table class="optionsTable">
+## Options
+<table>
   <tr>
     <th>Setting</th>
     <th>Default Value</th>
@@ -41,7 +19,7 @@ Replaces the hint with a substitute: a tile marker square and a (non-flashing) a
     <td>How many seconds before the hint arrow is cleared automatically</td>
   </tr>
   <tr>
-    <th colspan="3">Substitute Marker Settings</th>
+    <th colspan="3"><h3>Substitute Marker Settings</h3></th>
   </tr>
   <tr>
     <td>Use a substitute tile marker</td>
@@ -64,7 +42,7 @@ Replaces the hint with a substitute: a tile marker square and a (non-flashing) a
     <td>Show a text label ("Hint") on the substitute tile marker</td>
   </tr>
   <tr>
-    <th colspan="3">Substitute Arrow Settings</th>
+    <th colspan="3"><h3>Substitute Arrow Settings</h3></th>
   </tr>
   <tr>
     <td>Use a substitute arrow</td>
@@ -87,7 +65,7 @@ Replaces the hint with a substitute: a tile marker square and a (non-flashing) a
     <td>Radius of clear space around player before the arrow starts</td>
   </tr>
   <tr>
-    <th colspan="3">Debug Options</th>
+    <th colspan="3"><h3>Debug Options</h3></th>
   </tr>
   <tr>
     <td>Manually add Hint-Arrows</td>

@@ -128,17 +128,6 @@ public class NoHintArrowOverlay extends Overlay{
         );
     }
 
-    public void clearSubstituteMarker()
-    {
-        hintArrowType = HintArrowType.NONE;
-        hintArrowNPC = null;
-        hintArrowPlayer = null;
-        hintArrowPoint = null;
-    }
-
-    /**
-     *
-     */
     public void updateSubstituteMarker(int substituteMarkerActiveTicks)
     {
         this.substituteMarkerActiveTicks = substituteMarkerActiveTicks;

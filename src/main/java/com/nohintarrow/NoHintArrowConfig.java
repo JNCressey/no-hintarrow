@@ -26,64 +26,126 @@ public interface NoHintArrowConfig extends Config
 
 
 
-	//region Substitute Marker Settings
+	//region Substitute Tile Marker Settings
 	@ConfigSection(
-			name = "Substitute Marker Settings",
-			description = "Substitute Marker configuration",
+			name = "Substitute Tile Marker Settings",
+			description = "Substitute Tile Marker configuration",
 			position = 2,
 			closedByDefault = true
 	)
-	String substituteMarkerSection = "substituteMarkerSection";
+	String substituteTileMarkerSection = "substituteTileMarkerSection";
 
 
 	@ConfigItem(
-			keyName = "doSubstituteMarker",
-			name = "Use a substitute marker",
-			description = "Show a substitute marker for the removed hint arrow",
-			section = substituteMarkerSection,
+			keyName = "doSubstituteTileMarker",
+			name = "Use a substitute tile marker",
+			description = "Show a substitute tile marker for the removed hint arrow",
+			section = substituteTileMarkerSection,
 			position = 0
 	)
-	default boolean doSubstituteMarker()
+	default boolean doSubstituteTileMarker()
 	{
 		return false; // default won't use a substitute marker
 	}
 
 
 	@ConfigItem(
-			keyName = "substituteMarkerDurationSeconds",
-			name = "Duration (seconds)",
-			description = "How many seconds before the substitute marker is cleared",
-			section = substituteMarkerSection,
+			keyName = "substituteTileMarkerDurationSeconds",
+			name = "Tile Marker Duration (seconds)",
+			description = "How many seconds before the substitute tile marker is cleared",
+			section = substituteTileMarkerSection,
 			position = 1
 	)
-	default int substituteMarkerDurationSeconds()
+	default int substituteTileMarkerDurationSeconds()
 	{
 		return 60; // default 1 minute
 	}
 
 
 	@ConfigItem(
-			keyName = "substituteMarkerColor",
-			name = "Marker Color",
-			description = "Choose the color for the substitute marker",
-			section = substituteMarkerSection,
+			keyName = "substituteTileMarkerColor",
+			name = "Tile Marker Color",
+			description = "Choose the color for the substitute tile marker",
+			section = substituteTileMarkerSection,
 			position = 2
 	)
-	default Color substituteMarkerColor() {
+	default Color substituteTileMarkerColor() {
 		return Color.YELLOW; // default yellow
 	}
 
 
 	@ConfigItem(
-			keyName = "showSubstituteMarkerLabel",
+			keyName = "showSubstituteTileMarkerLabel",
 			name = "Show Label",
-			description = "Show a text label (\"Hint\") on the substitute marker",
-			section = substituteMarkerSection,
+			description = "Show a text label (\"Hint\") on the substitute tile marker",
+			section = substituteTileMarkerSection,
 			position = 3
 	)
-	default boolean showSubstituteMarkerLabel()
+	default boolean showSubstituteTileMarkerLabel()
 	{
 		return true; // default will show label for substitute marker
+	}
+	//endregion
+
+
+
+	//region Substitute Arrow Settings
+	@ConfigSection(
+			name = "Substitute Arrow Settings",
+			description = "Substitute Arrow configuration",
+			position = 3,
+			closedByDefault = true
+	)
+	String substituteArrowSection = "substituteArrowSection";
+
+
+	@ConfigItem(
+			keyName = "doSubstituteArrow",
+			name = "Use a substitute arrow",
+			description = "Show a substitute arrow for the removed hint arrow",
+			section = substituteArrowSection,
+			position = 0
+	)
+	default boolean doSubstituteArrow()
+	{
+		return false; // default won't use a substitute arrow
+	}
+
+
+	@ConfigItem(
+			keyName = "substituteArrowDurationSeconds",
+			name = "Arrow Duration (seconds)",
+			description = "How many seconds before the substitute arrow is cleared",
+			section = substituteArrowSection,
+			position = 1
+	)
+	default int substituteArrowDurationSeconds() //todo separate timer for each substitution
+	{
+		return 60; // default 1 minute
+	}
+
+
+	@ConfigItem(
+			keyName = "substituteArrowColor",
+			name = "Arrow Color",
+			description = "Choose the color for the substitute arrow",
+			section = substituteArrowSection,
+			position = 2
+	)
+	default Color substituteArrowColor() {
+		return Color.ORANGE; // default yellow
+	}
+
+
+	@ConfigItem(
+			keyName = "substituteArrowRadius",
+			name = "Arrow Radius",
+			description = "Radius of clear space around player before the arrow starts",
+			section = substituteArrowSection,
+			position = 3
+	)
+	default int substituteArrowRadius() {
+		return 3; // default about 1 tile
 	}
 	//endregion
 
@@ -93,7 +155,7 @@ public interface NoHintArrowConfig extends Config
 	@ConfigSection(
 			name = "Debug Options",
 			description = "Various options for debugging",
-			position = 3,
+			position = 4,
 			closedByDefault = true
 	)
 	String debugSection = "debugSection";

@@ -18,6 +18,7 @@ import java.awt.*;
 import javax.annotation.Nullable;
 import com.google.common.base.Strings;
 
+
 public class NoHintArrowOverlay extends Overlay{
 
     private static final int MAX_DRAW_DISTANCE = 32;
@@ -43,17 +44,56 @@ public class NoHintArrowOverlay extends Overlay{
 
     @Override
     public Dimension render(Graphics2D graphics) {
-        if (isVisible()) {
-            String label = config.showSubstituteMarkerLabel() ? "Hint" : null;
+        if (isTileMarkerVisible()) {
+            String label = config.showSubstituteTileMarkerLabel() ? "Hint" : null;
             switch (hintArrowType){
                 case HintArrowType.NPC:
-                    OverlayUtil.renderActorOverlay(graphics, hintArrowNPC, label, config.substituteMarkerColor());
+                    OverlayUtil.renderActorOverlay(graphics, hintArrowNPC, label, config.substituteTileMarkerColor());
                     break;
                 case HintArrowType.COORDINATE:
-                    drawTile( graphics,  hintArrowPoint,  config.substituteMarkerColor(), label);
+                    drawTile( graphics,  hintArrowPoint,  config.substituteTileMarkerColor(), label);
                     break;
                 case HintArrowType.PLAYER:
-                    OverlayUtil.renderActorOverlay(graphics, hintArrowPlayer, label, config.substituteMarkerColor());
+                    OverlayUtil.renderActorOverlay(graphics, hintArrowPlayer, label, config.substituteTileMarkerColor());
+                    break;
+
+                //case HintArrowType.WORLDENTITY:
+                case HintArrowType.NONE:
+                default:
+                    //I don't see any way to handle the hint-arrow when type is HintArrowType.WORLDENTITY
+                    //do nothing
+                    break;
+            }
+        }
+
+        if (isSubstituteArrowVisible()) {
+            switch (hintArrowType){
+                case HintArrowType.NPC:
+                    ArrowDrawer.renderBoatArrowTowardPoint(
+                            graphics,
+                            client,
+                            hintArrowNPC.getWorldLocation(),
+                            config.substituteArrowColor(),
+                            config.substituteArrowRadius()
+                    );
+                    break;
+                case HintArrowType.COORDINATE:
+                    ArrowDrawer.renderBoatArrowTowardPoint(
+                            graphics,
+                            client,
+                            hintArrowPoint,
+                            config.substituteArrowColor(),
+                            config.substituteArrowRadius()
+                    );
+                    break;
+                case HintArrowType.PLAYER:
+                    ArrowDrawer.renderBoatArrowTowardPoint(
+                            graphics,
+                            client,
+                            hintArrowPlayer.getWorldLocation(),
+                            config.substituteArrowColor(),
+                            config.substituteArrowRadius()
+                    );
                     break;
 
                 //case HintArrowType.WORLDENTITY:
@@ -67,9 +107,14 @@ public class NoHintArrowOverlay extends Overlay{
         return null;
     }
 
-    private boolean isVisible()
+    private boolean isTileMarkerVisible()
     {
-        return config.doSubstituteMarker() && (hintArrowType != HintArrowType.NONE);
+        return config.doSubstituteTileMarker() && (hintArrowType != HintArrowType.NONE);
+    }
+
+    private boolean isSubstituteArrowVisible()
+    {
+        return config.doSubstituteArrow() && (hintArrowType != HintArrowType.NONE);
     }
 
     public void clearSubstituteMarker()

@@ -145,7 +145,7 @@ public class NoHintArrowPlugin extends Plugin
 	//region substitute marker
 	// the user config for substitute marker duration converted to game ticks (1 tick = 0.6s)
 	private int getSubstituteMarkerDurationTicks(){
-		return (int) Math.ceil(config.substituteMarkerDurationSeconds() / 0.6);
+		return (int) Math.ceil(config.substituteTileMarkerDurationSeconds() / 0.6);
 	}
 
 

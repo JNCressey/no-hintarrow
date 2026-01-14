@@ -78,10 +78,11 @@ public class NoHintArrowPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		//region timers
-		//region Arrow timer
+		substituteMarkerActiveTicks++; //increment counter
 		if(client.hasHintArrow())
 		{
 			arrowActiveTicks++; //increment counter
+			substituteMarkerActiveTicks = 0; // refresh the counter for keeping substitute up
 
 		}
 		else
@@ -91,31 +92,13 @@ public class NoHintArrowPlugin extends Plugin
 		}
 		//endregion
 
-		//region Substitute Marker timer
-		if(isSubstituteMarkerSet){
-			substituteMarkerActiveTicks++; //increment counter
-		}
-		else
-		{
-			// No substitute marker active, reset counter
-			substituteMarkerActiveTicks = 0;
-		}
-		//endregion
-		//endregion
+
+		overlay.updateSubstituteMarker(substituteMarkerActiveTicks);
 
 
-		if (client.hasHintArrow() && (arrowActiveTicks >= getClearDelayTicks()))
+		if (client.hasHintArrow() && (arrowActiveTicks >= getClearDelayTicks())) // clear hint arrow if duration elapsed
 		{
 			clearHintArrow();
-		}
-
-
-		if (
-				(isSubstituteMarkerSet && (substituteMarkerActiveTicks >= getSubstituteMarkerDurationTicks())) // remove marker after duration
-				|| client.hasHintArrow() // remove marker if new hint arrow has been set
-		)
-		{
-			clearSubstituteMarker();
 		}
 	}
 
@@ -132,40 +115,9 @@ public class NoHintArrowPlugin extends Plugin
 	{
 		debugHintArrowValues();
 
-		updateSubstituteMarker();
-
 		arrowActiveTicks = 0; // reset counter
 
 		client.clearHintArrow();
-	}
-	//endregion
-
-
-
-	//region substitute marker
-	// the user config for substitute marker duration converted to game ticks (1 tick = 0.6s)
-	private int getSubstituteMarkerDurationTicks(){
-		return (int) Math.ceil(config.substituteTileMarkerDurationSeconds() / 0.6);
-	}
-
-
-	private void updateSubstituteMarker()
-	{
-		clearSubstituteMarker();
-
-		if (client.hasHintArrow() && (client.getHintArrowType() != HintArrowType.NONE))
-		{
-			isSubstituteMarkerSet = overlay.updateSubstituteMarker();
-		}
-	}
-
-
-	private void clearSubstituteMarker()
-	{
-		isSubstituteMarkerSet = false;
-		substituteMarkerActiveTicks = 0;
-
-		overlay.clearSubstituteMarker();
 	}
 	//endregion
 

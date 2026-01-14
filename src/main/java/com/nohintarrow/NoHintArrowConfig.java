@@ -51,7 +51,7 @@ public interface NoHintArrowConfig extends Config
 
 	@ConfigItem(
 			keyName = "substituteTileMarkerDurationSeconds",
-			name = "Tile Marker Duration (seconds)",
+			name = "Duration (seconds)",
 			description = "How many seconds before the substitute tile marker is cleared",
 			section = substituteTileMarkerSection,
 			position = 1
@@ -64,7 +64,7 @@ public interface NoHintArrowConfig extends Config
 
 	@ConfigItem(
 			keyName = "substituteTileMarkerColor",
-			name = "Tile Marker Color",
+			name = "Color",
 			description = "Choose the color for the substitute tile marker",
 			section = substituteTileMarkerSection,
 			position = 2
@@ -114,12 +114,12 @@ public interface NoHintArrowConfig extends Config
 
 	@ConfigItem(
 			keyName = "substituteArrowDurationSeconds",
-			name = "Arrow Duration (seconds)",
+			name = "Duration (seconds)",
 			description = "How many seconds before the substitute arrow is cleared",
 			section = substituteArrowSection,
 			position = 1
 	)
-	default int substituteArrowDurationSeconds() //todo separate timer for each substitution
+	default int substituteArrowDurationSeconds()
 	{
 		return 60; // default 1 minute
 	}
@@ -127,7 +127,7 @@ public interface NoHintArrowConfig extends Config
 
 	@ConfigItem(
 			keyName = "substituteArrowColor",
-			name = "Arrow Color",
+			name = "Color",
 			description = "Choose the color for the substitute arrow",
 			section = substituteArrowSection,
 			position = 2
@@ -139,7 +139,7 @@ public interface NoHintArrowConfig extends Config
 
 	@ConfigItem(
 			keyName = "substituteArrowRadius",
-			name = "Arrow Radius",
+			name = "Clear Radius",
 			description = "Radius of clear space around player before the arrow starts",
 			section = substituteArrowSection,
 			position = 3

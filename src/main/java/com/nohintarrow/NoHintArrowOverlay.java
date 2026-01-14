@@ -27,6 +27,7 @@ public class NoHintArrowOverlay extends Overlay{
     private NPC hintArrowNPC;
     private Player hintArrowPlayer;
     private WorldPoint hintArrowPoint;
+    private int substituteMarkerActiveTicks;
 
 
     @Inject
@@ -69,7 +70,7 @@ public class NoHintArrowOverlay extends Overlay{
         if (isSubstituteArrowVisible()) {
             switch (hintArrowType){
                 case HintArrowType.NPC:
-                    ArrowDrawer.renderBoatArrowTowardPoint(
+                    ArrowDrawer.renderArrowTowardPoint(
                             graphics,
                             client,
                             hintArrowNPC.getWorldLocation(),
@@ -78,7 +79,7 @@ public class NoHintArrowOverlay extends Overlay{
                     );
                     break;
                 case HintArrowType.COORDINATE:
-                    ArrowDrawer.renderBoatArrowTowardPoint(
+                    ArrowDrawer.renderArrowTowardPoint(
                             graphics,
                             client,
                             hintArrowPoint,
@@ -87,7 +88,7 @@ public class NoHintArrowOverlay extends Overlay{
                     );
                     break;
                 case HintArrowType.PLAYER:
-                    ArrowDrawer.renderBoatArrowTowardPoint(
+                    ArrowDrawer.renderArrowTowardPoint(
                             graphics,
                             client,
                             hintArrowPlayer.getWorldLocation(),
@@ -109,12 +110,22 @@ public class NoHintArrowOverlay extends Overlay{
 
     private boolean isTileMarkerVisible()
     {
-        return config.doSubstituteTileMarker() && (hintArrowType != HintArrowType.NONE);
+        int maxDuration = (int) Math.ceil(config.substituteTileMarkerDurationSeconds() / 0.6); //duration converted to game ticks (1 tick = 0.6s)
+        return (
+            config.doSubstituteTileMarker()
+            && (hintArrowType != HintArrowType.NONE)
+            && (substituteMarkerActiveTicks <= maxDuration)
+        );
     }
 
     private boolean isSubstituteArrowVisible()
     {
-        return config.doSubstituteArrow() && (hintArrowType != HintArrowType.NONE);
+        int maxDuration = (int) Math.ceil(config.substituteArrowDurationSeconds() / 0.6); //duration converted to game ticks (1 tick = 0.6s)
+        return (
+            config.doSubstituteArrow()
+            && (hintArrowType != HintArrowType.NONE)
+            && (substituteMarkerActiveTicks <= maxDuration)
+        );
     }
 
     public void clearSubstituteMarker()
@@ -127,12 +138,10 @@ public class NoHintArrowOverlay extends Overlay{
 
     /**
      *
-     * @return whether the marker has been set
      */
-    public boolean updateSubstituteMarker()
+    public void updateSubstituteMarker(int substituteMarkerActiveTicks)
     {
-        clearSubstituteMarker();
-
+        this.substituteMarkerActiveTicks = substituteMarkerActiveTicks;
         if (client.hasHintArrow())
         {
             hintArrowType = client.getHintArrowType();
@@ -152,11 +161,9 @@ public class NoHintArrowOverlay extends Overlay{
                     /* there is no client.getHintArrowWorldEntity? */
                 case HintArrowType.NONE:
                 default:
-                    clearSubstituteMarker();
-                    return false;
+                    break;
             }
         }
-        return true;
     }
 
 

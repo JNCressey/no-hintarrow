@@ -55,7 +55,7 @@ public class ArrowDrawer //based on the boat arrow from LlemonDuck/sailing plugi
         return translated;
     }
 
-    public static void renderBoatArrowTowardPoint(Graphics2D g, Client client, WorldPoint destination, Color color, int clearRadius)
+    public static void renderArrowTowardPoint(Graphics2D g, Client client, WorldPoint destination, Color color, int clearRadius)
     {
 
         WorldView tlwv = client.getTopLevelWorldView();
